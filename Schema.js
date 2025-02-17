@@ -1,18 +1,41 @@
 const mongoose = require('mongoose');
-const schema = mongoose.Schema;
 
-const credentials = new schema({
-  firstname: String,
-  lastname: String,
-  age: Number,
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  roles: {
+    type: [String],
+    default: ['user'], // Default role
+  },
+  profile: {
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
+    age: {
+      type: Number,
+    },
+  },
+  lastLogin: {
+    type: Date,
+    default: null,
+  },
+}, {
+  timestamps: true, // Automatically creates 'createdAt' and 'updatedAt' fields
 });
 
-const userControl = new schema({
-  username: { credentials, required: true, unique: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  rolls: [String],
-  lastLogin: Date,
-});
-
-module.exports = mongoose.model('user', userControl);
+module.exports = mongoose.model('User', userSchema);
